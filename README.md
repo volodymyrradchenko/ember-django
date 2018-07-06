@@ -2,10 +2,10 @@
 
 
 ## To-dos: 
-[ ] ### Setting up backend
-[ ] pyenv and virtualenv
-[ ] ### Setting up frontend
-[ ] node.js and nvm
+- [ ] ### Setting up backend
+  - [ ] pyenv and virtualenv
+- [ ] ### Setting up frontend
+  - [ ] node.js and nvm
 
 
 ## Building minimal Ember.js client and Django server
@@ -24,15 +24,79 @@ This is a minimal guide to setting up basic Django backend and making it work wi
 
 pyenv lets you easily switch between multiple versions of Python.
 
-Lets install and update pyenv using pyenv-installer:
+ Installing git
+ 
+ ```bash
+ apt-get install git 
+ ```
+ Installing pyenv and plugins using pyenv-installer
+ 
+ ```bash
+ curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+```
+add lines to the end of ~/.bashrc 
 
-##CHECK venv WITH LIVE LINUX MINT
+```bash
+export PATH="/home/mint/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+```
+requirements for pyenv 
 
-$ curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+```bash
+sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
+libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
+xz-utils tk-dev libffi-dev
+```
 
-and update:
+According to current Django REST and Django REST JSON API documentation the latest python version they support is 3.6,  
+so let's install python 3.6.6:
 
-$ pyenv update
+```bash
+pyenv install 3.6.6
+```
+
+lets create and open directory for our project
+
+```bash
+mkdir ember-django $$ cd ember-django
+```
+and a backend directory
+```bash
+mkdir backend $$ cd backend
+```
+create a virtual environment for the project
+
+```bash
+pyenv virtualenv 3.6.6 ember-django-3.6.6
+```
+now we will create a .python-version file with the name of our virtualenv so it would automatically switch to proper version after opening backend folder
+```bash
+echo "ember-django-3.6.6" > .python-version
+```
+
+now let's install latest Django version
+
+```bash
+pip install Django==2.0.7
+```
+
+install Django REST
+
+```bash
+pip install djangorestframework
+```
+
+and Django REST Framework JSON API
+
+```bash
+pip install djangorestframework-jsonapi
+```
+let's initialize project at the current directory
+```bash
+django-admin.py startproject backend .
+```
+Note "." character at the end of line above.
 
 
 
