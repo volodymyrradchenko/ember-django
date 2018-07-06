@@ -1,14 +1,44 @@
 # WIP // TUTORIAL. Ember.js + Django REST framework
 
+
 ## To-dos: 
-- [ ] Setting up backend
- - [ ] pyenv and virtualenv
-- [ ] Setting up frontend
- - [ ] node.js and nvm
+[ ] ### Setting up backend
+[ ] pyenv and virtualenv
+[ ] ### Setting up frontend
+[ ] node.js and nvm
+
 
 ## Building minimal Ember.js client and Django server
 
 This is a minimal guide to setting up basic Django backend and making it work with Ember.js
+
+
+## Contents
+
+- [Step 1. Setting up python environment](#step-1)
+- [Step 2. Setting up node environment](#step-2)
+
+## <a name='step-1'></a>Step 1
+
+### Install Simple Python Version Management: pyenv
+
+pyenv lets you easily switch between multiple versions of Python.
+
+Lets install and update pyenv using pyenv-installer:
+
+##CHECK venv WITH LIVE LINUX MINT
+
+$ curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+
+and update:
+
+$ pyenv update
+
+
+
+
+
+
 
 ## Welcome to GitHub Pages
 
