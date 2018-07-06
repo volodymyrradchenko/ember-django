@@ -27,25 +27,28 @@ This is a minimal guide to setting up basic Django backend and making it work wi
 - pyenv-virtualenv lets you easily switch between multiple virtual environments
 - pyenv-installer is needed to install pyenv and pyenv plugins for virtual environments control
 
+## Prerequisites
 
-- Installing git
+Installing git
  
  ```bash
  apt-get install git 
  ```
- - Installing pyenv and plugins using pyenv-installer
+
+Installing pyenv and plugins using pyenv-installer
  
  ```bash
  curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 ```
-- Adding lines to the end of `~/.bashrc` file located in the root folder
+
+Adding lines to the end of `~/.bashrc` file located in the root folder
 ```bash
 export PATH="/home/mint/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 ```
-- Installing requirements for pyenv
 
+Installing requirements for pyenv
 ```bash
 sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
@@ -54,51 +57,52 @@ xz-utils tk-dev libffi-dev
 
 According to current Django REST and Django REST JSON API documentation the latest python version they support is 3.6.
 
-- Tipe the following code to install Python version 3.6.6
+Tipe the following code to install Python version 3.6.6
 
 ```bash
 pyenv install 3.6.6
 ```
 
-- Create and open our project directory
+Create and open our project directory
 
 ```bash
 mkdir ember-django $$ cd ember-django
 ```
-- Create and switch to our backend directory
+
+Create and switch to our backend directory
 ```bash
 mkdir backend $$ cd backend
 ```
-create a virtual environment for the project
 
+Create a virtual environment for the project
 ```bash
 pyenv virtualenv 3.6.6 ember-django-3.6.6
 ```
 _ember-django-3.6.6 is the name of virtual env, you can give it any name_
 
-- Now we'll create a `.python-version` file with the name of our virtualenv so it would automatically switch to proper virtual environment every time we open backend folder
+Now we'll create a `.python-version` file with the name of our virtualenv so it would automatically switch to proper virtual environment every time we open backend folder
 ```bash
 echo "ember-django-3.6.6" > .python-version
 ```
 
-- Let's install latest Django version
-
+Let's install latest Django version
 ```bash
 pip install Django==2.0.7
 ```
 
-- Django REST
+Django REST
 
 ```bash
 pip install djangorestframework
 ```
 
-- and Django REST Framework JSON API
+and Django REST Framework JSON API
 
 ```bash
 pip install djangorestframework-jsonapi
 ```
-- let's initialize project in current directory
+
+Let's initialize project in current directory
 ```bash
 django-admin.py startproject backend .
 ```
