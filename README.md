@@ -1,3 +1,15 @@
+# WIP // TUTORIAL. Ember.js + Django REST framework
+
+## To-dos: 
+- [ ] Setting up backend
+ - [ ] pyenv and virtualenv
+- [ ] Setting up frontend
+ - [ ] node.js and nvm
+
+## Building minimal Ember.js client and Django server
+
+This is a minimal guide to setting up basic Django backend and making it work with Ember.js
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/volodymyrradchenko/ember-django/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
