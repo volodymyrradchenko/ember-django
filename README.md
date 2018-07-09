@@ -2,8 +2,13 @@
 
 
 ## To-dos: 
-- [ ] Setting up backend
-  - [x] pyenv and virtualenv
+- [ ] Django REST framework JSON API
+  - [x] Prerequisites
+  - [ ] Configuration and requirements
+  - [ ] Serialization
+  - [ ] Model
+  - [ ] Views
+  - [ ] Routes
 - [ ] Setting up frontend
   - [ ] node.js and nvm
 
@@ -15,10 +20,14 @@ This is a minimal guide to setting up basic Django backend and making it work wi
 
 ## Contents
 
-- [Step 1. Setting up python environment](#step-1)
-- [Step 2. Setting up node environment](#step-2)
+- [Step 1. Prerequisites](#step-1)
+- [Step 2. Configuration and requirements](#step-2)
+- [Step 3. Serialization](#step-3)
+- [Step 4. Model](#step-4)
+- [Step 5. Views](#step-5)
+- [Step 6. Routes](#step-6)
 
-## <a name='step-1'></a>Step 1
+## <a name='step-1'></a>Step 1. Prerequisites
 
 ### Install Python version manager, virtual environment manager and everything they need to work correctly
 
@@ -31,13 +40,13 @@ This is a minimal guide to setting up basic Django backend and making it work wi
 
 Installing git
  
- ```bash
+ ```shell
  sudo apt-get install git 
  ```
 
 Installing pyenv and plugins using pyenv-installer
  
- ```bash
+ ```shell
  curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 ```
 
@@ -48,70 +57,104 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 ```
 
-Installing requirements for pyenv
-```bash
+Installing requirements for using pyenv
+```shell
 sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
 xz-utils tk-dev libffi-dev
 ```
+## <a name='step-2'></a>Step 2. Configuration and requirements
 
-According to current Django REST and Django REST JSON API documentation the latest python version they support is 3.6.
+According to the current Django REST and Django REST JSON API documentation the latest python version supported is 3.6
 
-Tipe the following code to install Python version 3.6.6
+Type the following code to install Python version 3.6.6
 
-```bash
+```shell
 pyenv install 3.6.6
 ```
 
 Create and open our project directory
 
-```bash
+```shell
 mkdir ember-django && cd ember-django
 ```
 
 Create and switch to our backend directory
-```bash
+```shell
 mkdir backend && cd backend
 ```
 
-Create a virtual environment for the project
-```bash
+Create a virtual environment for the project and name it `ember-django-3.6.6`
+```shell
 pyenv virtualenv 3.6.6 ember-django-3.6.6
 ```
-_ember-django-3.6.6 is the name of virtual env, you can give it any name_
 
 Now we'll create a `.python-version` file with the name of our virtualenv so it would automatically switch to proper virtual environment every time we open backend folder
-```bash
-echo "ember-django-3.6.6" > .python-version
+```shell
+pyenv local ember-django-3.6.6
 ```
 
 Let's install latest Django version
-```bash
+```shell
 pip install Django==2.0.7
 ```
 
-Django REST
+Initialize project in the current directory
+```shell
+django-admin.py startproject backend .
+```
+_Note "." character at the end of the line above._
 
-```bash
+Once we've done that let's create an app that we'll use to create a Web API
+```shell
+python manage.py startapp posts
+```
+
+Now we can install Django REST Framework: a powerfull and flexible toolkit for building WEB APIs 
+
+```shell
 pip install djangorestframework
 ```
 
-and Django REST Framework JSON API
+and additional package Django REST Framework JSON API
 
-```bash
+```shell
 pip install djangorestframework-jsonapi
 ```
-
-Let's initialize project in current directory
-```bash
-django-admin.py startproject backend .
+As suggested by DJA (Django REST Framework JSON API) let's add some code to `backend/settings.py`
+```python
+REST_FRAMEWORK = {
+    'PAGE_SIZE': 10,
+    'EXCEPTION_HANDLER': 'rest_framework_json_api.exceptions.exception_handler',
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework_json_api.pagination.PageNumberPagination',
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework_json_api.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework_json_api.renderers.JSONRenderer',
+        # If you're performance testing, you will want to use the browseable API
+        # without forms, as the forms can generate their own queries.
+        # If performance testing, enable:
+        # 'example.utils.BrowsableAPIRendererWithoutForms',
+        # Otherwise, to play around with the browseable API, enable:
+        'rest_framework.renderers.BrowsableAPIRenderer'
+    ),
+    'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
+}
 ```
-_Note "." character at the end of line above._
+Also, we'll need to add our new apps to the same file
+```python
+INSTALLED_APPS = (
+    ...
+    'rest_framework',
+    'posts',
+)
+```
 
-
-
-
-
+## <a name='step-3'></a>Step 3. Serialization
 
 
 ## Welcome to GitHub Pages
