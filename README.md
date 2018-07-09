@@ -19,110 +19,116 @@ This is a minimal guide to setting up basic Django backend and making it work wi
 
 
 ## Contents
+- [Step 1 Backend](#step-1)
+  - [Step 1.1 Prerequisites](#step-1-1)
+  - [Step 1.2 Configuration and requirements](#step-1-2)
+  - [Step 1.3 Model](#step-1-3)
+  - [Step 1.4 Serialization](#step-1-4)
+  - [Step 1.5 Views](#step-1-5)
+  - [Step 1.6 Routes](#step-1-6)
+- [Step 2 Frontend](#step-2)
+  - [Step 2.1 Prerequisites](#step-2-1)
 
-- [Step 1. Prerequisites](#step-1)
-- [Step 2. Configuration and requirements](#step-2)
-- [Step 3. Model](#step-3)
-- [Step 4. Serialization](#step-4)
-- [Step 5. Views](#step-5)
-- [Step 6. Routes](#step-6)
 
-## <a name='step-1'></a>Step 1. Prerequisites
+# <a name='step-1'></a>Step 1 Backend
 
-### Install Python version manager, virtual environment manager and everything they need to work correctly
+Some description on what we'll do and how we'll do that goes here.
 
+### Resources:
+- [http://www.django-rest-framework.org](http://www.django-rest-framework.org)
+- [http://django-rest-framework-json-api.readthedocs.io](http://django-rest-framework-json-api.readthedocs.io)
+- [https://github.com/django-json-api/django-rest-framework-json-api](https://github.com/django-json-api/django-rest-framework-json-api)
+
+Install Python version manager, virtual environment manager and everything they need to work correctly:
 - git is needed to install pyenv-installer
 - pyenv lets you easily switch between multiple versions of Python
 - pyenv-virtualenv lets you easily switch between multiple virtual environments
 - pyenv-installer is needed to install pyenv and pyenv plugins for virtual environments control
 
-## Prerequisites
+## <a name='step-1-1'></a>Step 1.1 Prerequisites
 
-Installing git
+Installing git:
  
  ```shell
  sudo apt-get install git 
  ```
 
-Installing pyenv and plugins using pyenv-installer
+Installing pyenv and plugins using pyenv-installer:
  
  ```shell
  curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 ```
 
-Adding lines to the end of `~/.bashrc` file located in the root folder
+Adding lines to the end of `~/.bashrc` file located in the root folder:
 ```bash
 export PATH="/home/mint/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 ```
 
-Installing requirements for using pyenv
+Installing requirements for using pyenv:
 ```shell
 sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
 xz-utils tk-dev libffi-dev
 ```
-## <a name='step-2'></a>Step 2. Configuration and requirements
+## <a name='step-1-2'></a>Step 1.2 Configuration and requirements
 
-### Sources:
-* [http://www.django-rest-framework.org](http://www.django-rest-framework.org)
-* [http://django-rest-framework-json-api.readthedocs.io](http://django-rest-framework-json-api.readthedocs.io)
-* [https://github.com/django-json-api/django-rest-framework-json-api](https://github.com/django-json-api/django-rest-framework-json-api)
 
 
 According to current documentation the latest python version supported is 3.6
 
-Type the following code to install Python version 3.6.6
+Type the following code to install Python:
 
 ```shell
 pyenv install 3.6.6
 ```
 
-Create and open our project directory
+Create and open our project directory:
 
 ```shell
 mkdir ember-django && cd ember-django
 ```
 
-Create and switch to our backend directory
+Create and switch to our backend directory:
 ```shell
 mkdir backend && cd backend
 ```
 
-Create a virtual environment for the project and name it `ember-django-3.6.6`
+Let's create a virtual environment for the project and name it, say an `ember-django-3.6.6`:
 ```shell
 pyenv virtualenv 3.6.6 ember-django-3.6.6
 ```
 
-Now we'll create a `.python-version` file with the name of our virtualenv so it would automatically switch to proper virtual environment every time we open backend folder
+It would be nice to automatically switch virtual environment on opening current folder. Running command below will create `.python-version` file with the name of our virtualenv.
 ```shell
 pyenv local ember-django-3.6.6
 ```
+_if you wish `echo "ember-django-3.6.6" > .python-version` will also do the thing_
 
-Let's install latest Django version
+Let's install latest Django version:
 ```shell
 pip install Django==2.0.7
 ```
 
-Initialize project in the current directory
+Initialize project in the current directory:
 ```shell
 django-admin.py startproject backend .
 ```
 _Note "." character at the end of the line above._
 
-Once we've done that let's create an app that we'll use to create a Web API
+Once we've done that let's create an app that we'll use to create Web API.
 ```shell
 python manage.py startapp posts
 ```
 
-Now we can install Django REST Framework: a powerfull and flexible toolkit for building WEB APIs 
+Now we can install Django REST Framework: a "powerfull and flexible toolkit for building WEB APIs".
 
 ```shell
 pip install djangorestframework
 ```
 
-and additional package Django REST Framework JSON API
+and additional package Django REST Framework JSON API:
 
 ```shell
 pip install djangorestframework-jsonapi
@@ -151,7 +157,7 @@ REST_FRAMEWORK = {
     'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
 }
 ```
-Also, we'll need to add our new apps
+Also, we'll need to add our new apps:
 ```python
 INSTALLED_APPS = (
     ...
@@ -160,10 +166,10 @@ INSTALLED_APPS = (
 )
 ```
 
-## <a name='step-3'></a>Step 3. Model
+## <a name='step-1-3'></a>Step 1.3 Model
 
 We're going to start by creating a simple `Post` model that will store our posts.
-Add following code to `posts/models.py`
+Add the following code to `posts/models.py`:
 ```python
 from django.db import models
 
@@ -178,17 +184,17 @@ class Post(models.Model):
 		ordering = ('created',)
 ```
 
-We'll need to create migration for posts model 
+We'll need to create a migration for posts model:
 ```shell
 python manage.py makemigrations posts
 ```
 
-and syncronize the database for the first time
+and syncronize the database for the first time:
 ```shell
 python manage.py migrate
 ```
 
-## <a name='step-4'></a>Step 4. Serialization
+## <a name='step-1-4'></a>Step 1.4 Serialization
 
 First of all, let's create `posts/serializers.py` file.
 
@@ -204,7 +210,7 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ('id', 'created', 'title', 'body', 'url', )
 ```
 
-## <a name='step-5'></a>Step 5. Views
+## <a name='step-1-5'></a>Step 1.5 Views
 
 We'll start by adding classes for handling JSON API requests and responses. Add the code below to `posts/views.py`
 ```python
@@ -259,9 +265,9 @@ class PostViewSet(JsonApiViewSet):
 ```
 _you can find more examples at DJA [github page](https://github.com/django-json-api/django-rest-framework-json-api/blob/master/example/views.py)_
 
-## <a name='step-6'></a>Step 6. Routes
+## <a name='step-1-6'></a>Step 1.6 Routes
 
-Let's register appropriate view sets
+Let's register appropriate view sets at `posts/urls.py`
 ```python
 from django.conf.urls import include, url
 from rest_framework import routers
@@ -278,26 +284,34 @@ urlpatterns = [
 ]
 ```
 
-And don't forget to make migrations
+and don't forget to make migrations:
 ```shell
 python manage.py makemigrations
 ```
 
-and
+and:
 ```shell
 python manage.py migrate
 ```
 
-Now we can run django server 
+If you'll run django server:
 ```shell
 python manage.py runserver
 ```
 
-Now you're supposed to see an empty Posts List at [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/)
+you'll see an empty Posts List at [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/).
 
-If you'll scroll to the bottom of the page you'll notice a HTML form that allows us to send some information to the server. Let's add our first post:
-Title: `My First Post`
-Body: `Hello World`
-URL: `http://www.django-rest-framework.org/img/logo.png`
+_Note, that [JSON API conventions](http://jsonapi.org/recommendations/)  suggest us to avoid using trailing slashes. So, when we'll set up Ember.js client we'll have change one of the lines in `urls.py` to `router = routers.DefaultRouter(trailing_slash=False)`_
 
-Now, if you'll go to [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/) you'll see the list of our posts and if you'll go to [http://127.0.0.1:8000/posts/1/](http://127.0.0.1:8000/posts/1/) you'll see our first post
+If you'll scroll to the bottom of the page you'll notice a HTML form that allows us to `PUT` some information to the server. Try to add your first post.
+
+Now, if you'll go to [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/) you'll see a list of posts and if you'll go to [http://127.0.0.1:8000/posts/1/](http://127.0.0.1:8000/posts/1/) you'll see our first post
+
+# <a name='step-2'></a>Step 2 Frontend
+
+Some description on what we'll do and how we'll do that goes here
+
+### Resources:
+- [https://github.com/netguru/ember-styleguide](https://github.com/netguru/ember-styleguide)
+- [https://www.emberjs.com/learn/](https://www.emberjs.com/learn/)
+- [https://yoember.com/nodejs/the-best-way-to-install-node-js/](https://yoember.com/nodejs/the-best-way-to-install-node-js/)
