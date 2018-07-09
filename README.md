@@ -4,9 +4,9 @@
 ## To-dos: 
 - [ ] Django REST framework JSON API
   - [x] Prerequisites
-  - [ ] Configuration and requirements
-  - [ ] Serialization
-  - [ ] Model
+  - [x] Configuration and requirements
+  - [x] Model
+  - [x] Serialization
   - [ ] Views
   - [ ] Routes
 - [ ] Setting up frontend
@@ -22,8 +22,8 @@ This is a minimal guide to setting up basic Django backend and making it work wi
 
 - [Step 1. Prerequisites](#step-1)
 - [Step 2. Configuration and requirements](#step-2)
-- [Step 3. Serialization](#step-3)
-- [Step 4. Model](#step-4)
+- [Step 3. Model](#step-3)
+- [Step 4. Serialization](#step-4)
 - [Step 5. Views](#step-5)
 - [Step 6. Routes](#step-6)
 
@@ -65,7 +65,13 @@ xz-utils tk-dev libffi-dev
 ```
 ## <a name='step-2'></a>Step 2. Configuration and requirements
 
-According to the current Django REST and Django REST JSON API documentation the latest python version supported is 3.6
+###Sources:
+* [http://www.django-rest-framework.org](http://www.django-rest-framework.org)
+* [http://django-rest-framework-json-api.readthedocs.io](http://django-rest-framework-json-api.readthedocs.io)
+* [https://github.com/django-json-api/django-rest-framework-json-api](https://github.com/django-json-api/django-rest-framework-json-api)
+
+
+According to current documentation the latest python version supported is 3.6
 
 Type the following code to install Python version 3.6.6
 
@@ -145,7 +151,7 @@ REST_FRAMEWORK = {
     'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
 }
 ```
-Also, we'll need to add our new apps to the same file
+Also, we'll need to add our new apps
 ```python
 INSTALLED_APPS = (
     ...
@@ -154,43 +160,49 @@ INSTALLED_APPS = (
 )
 ```
 
-## <a name='step-3'></a>Step 3. Serialization
+## <a name='step-3'></a>Step 3. Model
+
+We're going to start by creating a simple `Post` model that will store our posts.
+Add following code to `posts/models.py`
+```python
+from django.db import models
 
 
-## Welcome to GitHub Pages
+class Post(models.Model):
+	created = models.DateTimeField(auto_now_add=True)
+	title = models.CharField(max_length=100, blank=True, default='')
+	body = models.TextField(default='')
+	url = models.URLField(default='')
 
-You can use the [editor on GitHub](https://github.com/volodymyrradchenko/ember-django/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+	class Meta:
+		ordering = ('created',)
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+We'll need to create migration for posts model 
+```shell
+python manage.py makemigrations posts
+```
 
-### Jekyll Themes
+and syncronize the database for the first time
+```shell
+python manage.py migrate
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/volodymyrradchenko/ember-django/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## <a name='step-4'></a>Step 4. Serialization
 
-### Support or Contact
+First of all, let's create `posts/serializers.py` file.
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+We'll provide a way of serializing and deserializing our posts instances into JSON representation by creating `PostSerializer` class. Let's use base serializer class so kindly provided by `rest_framework_json_api`
+```python
+from rest_framework_json_api import serializers
+from posts.models import Post
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('id', 'created', 'title', 'body', 'url', )
+```
+
+## <a name='step-5'></a>Step 5. Views
+
