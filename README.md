@@ -32,7 +32,7 @@ This is a minimal guide to setting up basic Django backend and making it work wi
 Installing git
  
  ```bash
- apt-get install git 
+ sudo apt-get install git 
  ```
 
 Installing pyenv and plugins using pyenv-installer
@@ -66,12 +66,12 @@ pyenv install 3.6.6
 Create and open our project directory
 
 ```bash
-mkdir ember-django $$ cd ember-django
+mkdir ember-django && cd ember-django
 ```
 
 Create and switch to our backend directory
 ```bash
-mkdir backend $$ cd backend
+mkdir backend && cd backend
 ```
 
 Create a virtual environment for the project
