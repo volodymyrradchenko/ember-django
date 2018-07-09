@@ -2,13 +2,13 @@
 
 
 ## To-dos: 
-- [ ] Django REST framework JSON API
+- [x] Django REST framework JSON API
   - [x] Prerequisites
   - [x] Configuration and requirements
   - [x] Model
   - [x] Serialization
   - [x] Views
-  - [ ] Routes
+  - [x] Routes
 - [ ] Setting up frontend
   - [ ] node.js and nvm
 
@@ -65,7 +65,7 @@ xz-utils tk-dev libffi-dev
 ```
 ## <a name='step-2'></a>Step 2. Configuration and requirements
 
-###Sources:
+### Sources:
 * [http://www.django-rest-framework.org](http://www.django-rest-framework.org)
 * [http://django-rest-framework-json-api.readthedocs.io](http://django-rest-framework-json-api.readthedocs.io)
 * [https://github.com/django-json-api/django-rest-framework-json-api](https://github.com/django-json-api/django-rest-framework-json-api)
@@ -268,7 +268,7 @@ from rest_framework import routers
 
 from posts.views import PostViewSet
 
-router = routers.DefaultRouter(trailing_slash=False)
+router = routers.DefaultRouter()
 
 router.register(r'posts', PostViewSet)
 
@@ -277,3 +277,27 @@ urlpatterns = [
     url(r'^', include(router.urls)),
 ]
 ```
+
+And don't forget to make migrations
+```shell
+python manage.py makemigrations
+```
+
+and
+```shell
+python manage.py migrate
+```
+
+Now we can run django server 
+```shell
+python manage.py runserver
+```
+
+Now you're supposed to see an empty Posts List at [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/)
+
+If you'll scroll to the bottom of the page you'll notice a HTML form that allows us to send some information to the server. Let's add our first post:
+Title: `My First Post`
+Body: `Hello World`
+URL: `http://www.django-rest-framework.org/img/logo.png`
+
+Now, if you'll go to [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/) you'll see the list of our posts and if you'll go to [http://127.0.0.1:8000/posts/1/](http://127.0.0.1:8000/posts/1/) you'll see our first post
