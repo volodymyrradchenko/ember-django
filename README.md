@@ -10,7 +10,11 @@
   - [x] Views
   - [x] Routes
 - [ ] Setting up frontend
-  - [ ] node.js and nvm
+  - [ ] Prerequisites
+  - [ ] Creating our app
+  - [ ] Routes and templates
+  - [ ] Model
+  - [ ] Components
 
 
 ## Building minimal Ember.js client and Django server
@@ -115,7 +119,7 @@ Initialize project in the current directory:
 ```shell
 django-admin.py startproject backend .
 ```
-_Note "." character at the end of the line above._
+_**NOTE** mention "." character at the end of the line above._
 
 Once we've done that let's create an app that we'll use to create Web API.
 ```shell
@@ -169,7 +173,7 @@ INSTALLED_APPS = (
 ## <a name='step-1-3'></a>Step 1.3 Model
 
 We're going to start by creating a simple `Post` model that will store our posts.
-Add the following code to `posts/models.py`:
+Add the following code to `posts/models.py`
 ```python
 from django.db import models
 
@@ -263,7 +267,7 @@ class PostViewSet(JsonApiViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 ```
-_you can find more examples at DJA [github page](https://github.com/django-json-api/django-rest-framework-json-api/blob/master/example/views.py)_
+_you can find more examples at DJAs [github page](https://github.com/django-json-api/django-rest-framework-json-api/blob/master/example/views.py)_
 
 ## <a name='step-1-6'></a>Step 1.6 Routes
 
@@ -299,19 +303,33 @@ If you'll run django server:
 python manage.py runserver
 ```
 
-you'll see an empty Posts List at [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/).
+you'll see an empty Posts List at [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/)
 
-_Note, that [JSON API conventions](http://jsonapi.org/recommendations/)  suggest us to avoid using trailing slashes. So, when we'll set up Ember.js client we'll have change one of the lines in `urls.py` to `router = routers.DefaultRouter(trailing_slash=False)`_
+_**NOTE** [JSON API conventions](http://jsonapi.org/recommendations/) suggest us to avoid using trailing slashes. So, when we'll set up Ember.js client we'll have to change one of the lines in `urls.py` to `router = routers.DefaultRouter(trailing_slash=False)`_
 
-If you'll scroll to the bottom of the page you'll notice a HTML form that allows us to `PUT` some information to the server. Try to add your first post.
+If you'll scroll to the bottom of the page you'll notice an HTML form that allows us to `PUT` some information to the server. Try to add your first post.
 
-Now, if you'll go to [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/) you'll see a list of posts and if you'll go to [http://127.0.0.1:8000/posts/1/](http://127.0.0.1:8000/posts/1/) you'll see our first post
+Now, if you'll go to [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/) you'll see a list of posts and if you'll go to [http://127.0.0.1:8000/posts/1/](http://127.0.0.1:8000/posts/1/) you'll see your first post.
 
 # <a name='step-2'></a>Step 2 Frontend
 
-Some description on what we'll do and how we'll do that goes here
+We want our application to:
+- display some information on the home page
+- link to the list of posts, where we'll be able to:
+  - create new post
+  - view certain post
+  - edit existing post
+  - delete existing post
 
 ### Resources:
 - [https://github.com/netguru/ember-styleguide](https://github.com/netguru/ember-styleguide)
 - [https://www.emberjs.com/learn/](https://www.emberjs.com/learn/)
 - [https://yoember.com/nodejs/the-best-way-to-install-node-js/](https://yoember.com/nodejs/the-best-way-to-install-node-js/)
+- [https://github.com/DockYard/styleguides/blob/master/engineering/ember.md](https://github.com/DockYard/styleguides/blob/master/engineering/ember.md)
+
+## <a name='step-2-1'></a>Step 2.1 Prerequisites
+
+Before starting our ember project we'll need to set up virtual environment and install Node.js. All you need to do is just to follow [zoltan-nz](https://yoember.com/nodejs/the-best-way-to-install-node-js/)'s recomendations.
+
+
+## <a name='step-2-2'></a>Step 2.2 Creating our app
