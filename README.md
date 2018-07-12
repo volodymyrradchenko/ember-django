@@ -324,8 +324,9 @@ We want our application to:
 ### Resources:
 - [https://github.com/netguru/ember-styleguide](https://github.com/netguru/ember-styleguide)
 - [https://www.emberjs.com/learn/](https://www.emberjs.com/learn/)
-- [https://yoember.com/nodejs/the-best-way-to-install-node-js/](https://yoember.com/nodejs/the-best-way-to-install-node-js/)
-- [https://github.com/DockYard/styleguides/blob/master/engineering/ember.md](https://github.com/DockYard/styleguides/blob/master/engineering/ember.md)
+- [Install Node](https://yoember.com/nodejs/the-best-way-to-install-node-js/)
+- DockYard's [Styleguide](https://github.com/DockYard/styleguides/blob/master/engineering/ember.md)
+- [https://www.w3schools.com/](https://www.w3schools.com/)
 
 ## <a name='step-2-1'></a>Step 2.1 Prerequisites
 
