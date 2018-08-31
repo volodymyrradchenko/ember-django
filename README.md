@@ -12,9 +12,9 @@
 - [ ] Setting up frontend
   - [x] Prerequisites
   - [x] Creating our app
-  - [ ] Navigation
-  - [ ] Routes
-  - [ ] Model
+  - [x] Navigation
+  - [x] Routes
+  - [x] Model
   - [ ] Posts
 
 
@@ -34,7 +34,9 @@ This is a minimal guide to setting up basic Django backend and making it work wi
 - [Step 2 Frontend](#step-2)
   - [Step 2.1 Prerequisites](#step-2-1)
   - [Step 2.2 Creating app](#step-2-2)
-  - [Step 2.1 Navigation](#step-2-3)
+  - [Step 2.3 Navigation](#step-2-3)
+  - [Step 2.4 Routes](#step-2-4)
+  - [Step 2.5 Model](#step-2-5)
 
 
 # <a name='step-1'></a>Step 1 Backend
@@ -353,12 +355,19 @@ And to simplify our development process let's install ember-cli-sass. If you've 
 ember install ember-cli-sass
 ```
 
-Let's turn on some dev options in `config/environment.js`. Just uncomment the following.
+Let's turn on some dev options and pods folder structure in `config/environment.js`. Just uncomment the following.
 ```js
 ENV.APP.LOG_ACTIVE_GENERATION = true;
 ENV.APP.LOG_TRANSITIONS = true;
 ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
 ENV.APP.LOG_VIEW_LOOKUPS = true;
+```
+and add this line
+```js
+let ENV = {
+  ...
+  podModulePrefix: 'frontend/pods',
+  ...
 ```
 
 Now we can start our backend from `ember-django/backend` folder
@@ -373,7 +382,7 @@ ember s --proxy http://127.0.0.1:8000/
 
 It's that easy!
 
-## <a name='step-2-3'></a>Step 2.2 Navigation
+## <a name='step-2-3'></a>Step 2.3 Navigation
 
 Let's start with a simple navigation for the blog. We are going to create a 'main-header' component that will include 'nav-bar' and 'sub-menu' components. To not to get lost in that amount of directories and subdirectories we'll use ember pods structure.
 
@@ -461,3 +470,28 @@ And don't forget to add our main-header component to the `templates/application.
 {{outlet}}
 ```
 Now you should be able to see a simple nav-bar and with one 'Home' button and an error in console saying that there's no such routes.
+
+## <a name='step-2-4'></a>Step 2.4 Routes
+
+Now let's add the missing about route!
+```shell
+ember g route about
+```
+
+And posts route in a separate folder.
+```shell
+ember g route posts/index
+```
+and
+```shell
+ember g route posts/new
+```
+
+Now if you start the server you should be able to navigate to Posts and About page.
+
+## <a name='step-2-5'></a>Step 2.5 Model
+
+Let's generate a model for our posts.
+```shell
+ember g model posts title:string body:string url:string
+```
