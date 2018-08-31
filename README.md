@@ -10,7 +10,7 @@
   - [x] Views
   - [x] Routes
 - [ ] Setting up frontend
-  - [ ] Prerequisites
+  - [x] Prerequisites
   - [ ] Creating our app
   - [ ] Routes and templates
   - [ ] Model
@@ -339,3 +339,33 @@ Before starting our ember project we'll need to set up virtual environment and i
 
 
 ## <a name='step-2-2'></a>Step 2.2 Creating our app
+
+After you installed node.js run the following command in your terminal. Make sure you're in our projects root directory. Add `--yarn` to the line following if you're using yarn as dependency manager.
+```shell
+ember new frontend
+```
+
+And to simplify our development process let's install ember-cli-sass. If you've used yarn in the previous step, then ember will automatically install addon using your preferred package manager.
+```shell
+ember install ember-cli-sass
+```
+
+Let's turn on some dev options in `config/environment.js`. Just uncomment the following.
+```js
+ENV.APP.LOG_ACTIVE_GENERATION = true;
+ENV.APP.LOG_TRANSITIONS = true;
+ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
+ENV.APP.LOG_VIEW_LOOKUPS = true;
+```
+
+Now we can start our backend from `ember-django/backend` folder
+```shell
+python manage.py runserver
+```
+
+And proxy our ember server to `http://127.0.0.1:8000/` running the following from `ember-django/frontend` folder
+```shell
+ember s --proxy http://127.0.0.1:8000/
+```
+
+It's that easy!
