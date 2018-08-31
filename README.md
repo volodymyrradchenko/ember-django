@@ -453,7 +453,7 @@ Now we can style each component separately. Let's create a `styles.scss` file in
 ```
 
 And a template with our `index` and funture `about` and `posts` link.
-```hbs
+```handlebars
 <ul>
   <li>{{#link-to 'index'}}Home{{/link-to}}</li>
   <li>{{#link-to 'posts'}}Posts{{/link-to}}</li>
@@ -462,7 +462,7 @@ And a template with our `index` and funture `about` and `posts` link.
 ```
 
 Now we have to include nav-bar to the main-header component. Open `main-header/template.hbs` file and add the following.
-```hbs
+```handlebars
 {{yield (hash
   navBar=(component 'main-header/nav-bar')
   )
@@ -470,7 +470,7 @@ Now we have to include nav-bar to the main-header component. Open `main-header/t
 ```
 
 And don't forget to add our main-header component to the `templates/application.hbs` file.
-```hbs
+```handlebars
 {{#main-header as |header|}}
   {{header.navBar}}
 {{/main-header}}
@@ -527,7 +527,7 @@ ember g component post-container/post-card --pod
 ```
 
 Let's edit post-card component first. Add followinf to the `template.hbs`
-```hbs
+```handlebars
 <div class="card margin">
     <img src="{{url}}" style="width:100%">
     <div class="container">
@@ -560,7 +560,7 @@ Now let's style it - create file `styles.scss` and add
 ```
 
 Now let's edit `post-container/template.hbs`
-```hbs
+```handlebars
 {{yield (hash 
   postCard=(component 'post-container/post-card' 
   url=url 
@@ -587,7 +587,7 @@ ember g component main-header/sub-menu --pod
 ```
 
 Add to `sub-menu/template.hbs`
-```hbs
+```handlebars
 <ul>
   <li>{{#link-to 'posts.index'}}List{{/link-to}}</li>
   <li>{{#link-to 'posts.new'}}New{{/link-to}}</li>
@@ -628,7 +628,7 @@ And create `sub-menu/styles.scss` with the following code.
 }
 ```
 And of course don't forget to include it in the main-header components `template.hbs`. Now it should look like this:
-```hbs
+```handlebars
 {{yield (hash 
   navBar=(component 'main-header/nav-bar')
   subMenu=(component 'main-header/sub-menu')
@@ -637,7 +637,7 @@ And of course don't forget to include it in the main-header components `template
 ```
 
 The last thing to do is to add our pod component to the template. So open file `templates/posts/index.hbs` and add the code.
-```hbs
+```handlebars
 {{#post-container as |pc|}}
   {{#each model as |post|}}
     {{pc.postCard model=post url=post.url title=post.title body=post.body}}
@@ -658,7 +658,7 @@ ember install ember-concurrency
 ```
 
 Then add a delete button to the `app/pods/components/post-container/post-card/template.hbs` file.
-```hbs
+```handlebars
 <div class="card margin">
     <img src="{{url}}" style="width:100%">
     <div class="container">
