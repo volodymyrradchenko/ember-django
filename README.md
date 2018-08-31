@@ -15,7 +15,10 @@
   - [x] Navigation
   - [x] Routes
   - [x] Model
-  - [ ] Posts
+  - [x] Posts
+  - [x] Posts Delete
+  - [ ] Posts New
+  - [ ] Posts Edit
 
 
 ## Building minimal Ember.js client and Django server
@@ -37,6 +40,11 @@ This is a minimal guide to setting up basic Django backend and making it work wi
   - [Step 2.3 Navigation](#step-2-3)
   - [Step 2.4 Routes](#step-2-4)
   - [Step 2.5 Model](#step-2-5)
+  - [Step 2.6 Posts](#step-2-6)
+  - [Step 2.7 Posts Delete](#step-2-7)
+  - [Step 2.8 Posts New](#step-2-8)
+  - [Step 2.9 Posts Edit](#step-2-9)
+
 
 
 # <a name='step-1'></a>Step 1 Backend
@@ -638,3 +646,48 @@ The last thing to do is to add our pod component to the template. So open file `
 
 {{outlet}}
 ```
+
+Congratulations! Now you should be able to see your posts list.
+
+## <a name='step-2-7'></a>Step 2.7 Posts Delete
+
+Let's add a delete button to our post-card pod component. I'll use ember-concurrency task for doing that.
+First, let's install it.
+```shell
+ember install ember-concurrency
+```
+
+Then add a delete button to the `app/pods/components/post-container/post-card/template.hbs` file.
+```hbs
+<div class="card margin">
+    <img src="{{url}}" style="width:100%">
+    <div class="container">
+      <h3><b>{{title}}</b></h3>
+    </div>
+    <div class="container">
+      <p>{{body}}</p>
+    </div>
+    <button type="button" onclick={{perform deletePost}}>Delete</button>
+</div>
+```
+
+Now let's edit our `component.js` file.
+```js
+import Component from '@ember/component';
+import { task } from 'ember-concurrency';
+
+export default Component.extend({
+  model: null,
+
+  deletePost: task(function* () {
+    yield this.model.destroyRecord();
+  })
+});
+```
+
+Now you should be able to delete posts from the server.
+
+## <a name='step-2-8'></a>Step 2.8 Posts New
+
+
+## <a name='step-2-9'></a>Step 2.9 Posts Edit
