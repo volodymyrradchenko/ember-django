@@ -11,10 +11,11 @@
   - [x] Routes
 - [ ] Setting up frontend
   - [x] Prerequisites
-  - [ ] Creating our app
-  - [ ] Routes and templates
+  - [x] Creating our app
+  - [ ] Navigation
+  - [ ] Routes
   - [ ] Model
-  - [ ] Components
+  - [ ] Posts
 
 
 ## Building minimal Ember.js client and Django server
@@ -32,6 +33,8 @@ This is a minimal guide to setting up basic Django backend and making it work wi
   - [Step 1.6 Routes](#step-1-6)
 - [Step 2 Frontend](#step-2)
   - [Step 2.1 Prerequisites](#step-2-1)
+  - [Step 2.2 Creating app](#step-2-2)
+  - [Step 2.1 Navigation](#step-2-3)
 
 
 # <a name='step-1'></a>Step 1 Backend
@@ -338,7 +341,7 @@ We want our application to:
 Before starting our ember project we'll need to set up virtual environment and install Node.js. All you need to do is just to follow [zoltan-nz](https://yoember.com/nodejs/the-best-way-to-install-node-js/)'s recomendations.
 
 
-## <a name='step-2-2'></a>Step 2.2 Creating our app
+## <a name='step-2-2'></a>Step 2.2 Creating app
 
 After you installed node.js run the following command in your terminal. Make sure you're in our projects root directory. Add `--yarn` to the line following if you're using yarn as dependency manager.
 ```shell
@@ -369,3 +372,92 @@ ember s --proxy http://127.0.0.1:8000/
 ```
 
 It's that easy!
+
+## <a name='step-2-3'></a>Step 2.2 Navigation
+
+Let's start with a simple navigation for the blog. We are going to create a 'main-header' component that will include 'nav-bar' and 'sub-menu' components. To not to get lost in that amount of directories and subdirectories we'll use ember pods structure.
+
+```shell
+ember g component main-header --pod
+```
+and 
+```shell
+ember g component main-header/nav-bar --pod
+```
+
+This will create a folder `pods` in our `app` directory. Each pod component will have `component.js` and template.hbs generated. Let's also make it possible to add scss files so we could style our components.
+
+```shell
+ember install ember-component-css
+```
+
+To make it work you must `app/styles/app.css` to `app/styles/app.scss` and add one single import. 
+```scss
+@import 'pod-styles';
+```
+
+Now we can style each component separately. Let's create a `styles.scss` file in `pods/components/main-header/nav-bar` folder, and add this styling to it.
+```scss
+& {
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid #e7e7e7;
+        background-color: #f3f3f3;
+
+        li:last-child {
+            float: right;
+        }
+
+        li {
+            float: left;
+
+            a {
+                display: block;
+                color: #666;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+            a:hover:not(.active) {
+                background-color: #ddd;
+            }
+
+            a.active {
+                color: white;
+                background-color: #4CAF50;
+            }
+        }
+    }
+}
+```
+
+And a template with our `index` and funture `about` and `posts` link.
+```hbs
+<ul>
+  <li>{{#link-to 'index'}}Home{{/link-to}}</li>
+  <li>{{#link-to 'posts'}}Posts{{/link-to}}</li>
+  <li>{{#link-to 'about'}}About{{/link-to}}</li>
+</ul>
+```
+
+Now we have to include nav-bar to the main-header component. Open `main-header/template.hbs` file and add the following.
+```hbs
+{{yield (hash
+  navBar=(component 'main-header/nav-bar')
+  )
+}}
+```
+
+And don't forget to add our main-header component to the `templates/application.hbs` file.
+```hbs
+{{#main-header as |header|}}
+  {{header.navBar}}
+{{/main-header}}
+
+{{outlet}}
+```
+Now you should be able to see a simple nav-bar and with one 'Home' button and an error in console saying that there's no such routes.
