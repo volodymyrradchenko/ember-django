@@ -1,1 +1,7 @@
+{{#post-container as |pc|}}
+	{{#each model as |post|}}
+		{{pc.postCard model=post url=post.url title=post.title body=post.body}}
+	{{/each}}
+{{/post-container}}
+
 {{outlet}}

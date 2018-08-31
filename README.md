@@ -493,5 +493,148 @@ Now if you start the server you should be able to navigate to Posts and About pa
 
 Let's generate a model for our posts.
 ```shell
-ember g model posts title:string body:string url:string
+ember g model post title:string body:string url:string
+```
+
+And add the following to the `routes/posts/index.js`
+```js
+import Route from '@ember/routing/route';
+
+export default Route.extend({
+  model() {
+    return this.store.findAll('post');
+  }
+});
+```
+
+## <a name='step-2-6'></a>Step 2.6 Posts
+
+Now let's create post-container component that will include post-card component and be a wrapper for all postcards we'll have.
+```shell
+ember g component post-container --pod
+```
+and 
+```shell
+ember g component post-container/post-card --pod
+```
+
+Let's edit post-card component first. Add followinf to the `template.hbs`
+```hbs
+<div class="card margin">
+    <img src="{{url}}" style="width:100%">
+    <div class="container">
+      <h3><b>{{title}}</b></h3>
+    </div>
+    <div class="container">
+      <p>{{body}}</p>
+    </div>
+</div>
+```
+Now let's style it - create file `styles.scss` and add
+```scss
+& {
+  .card {
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2), 0 4px 20px 0 rgba(0,0,0,0.19);
+  }
+
+  .margin{
+    margin: 16px;
+  }
+
+  .container {
+    padding: 0.01em 16px;
+  }
+
+  .opacity {
+    opacity: 0.60;
+  }
+}
+```
+
+Now let's edit `post-container/template.hbs`
+```hbs
+{{yield (hash 
+  postCard=(component 'post-container/post-card' 
+  url=url 
+  body=body 
+  title=title 
+  created=created)
+  )
+}}
+```
+And add a grid too. Create `post-container/styles.scss`
+```scss
+& {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+  align-items: start;
+}
+```
+We'll aslo need a submenu for our navigation to access the list of posts and to create a new post.
+
+Let's generate new pod component.
+```shell
+ember g component main-header/sub-menu --pod
+```
+
+Add to `sub-menu/template.hbs`
+```hbs
+<ul>
+  <li>{{#link-to 'posts.index'}}List{{/link-to}}</li>
+  <li>{{#link-to 'posts.new'}}New{{/link-to}}</li>
+</ul>
+```
+And create `sub-menu/styles.scss` with the following code.
+```scss
+& {
+    ul {
+        list-style-type: none;
+        margin: 10px 0px 20px 15px;
+        padding: 0;
+        overflow: hidden;
+
+        li {
+        border: 1px solid #e7e7e7;
+        background-color: #f3f3f3;
+            float: left;
+
+            a {
+                display: block;
+                color: #666;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+            a:hover:not(.active) {
+                background-color: #ddd;
+            }
+
+            a.active {
+                color: white;
+                background-color: #4CAF50;
+            }
+        }
+    }
+}
+```
+And of course don't forget to include it in the main-header components `template.hbs`. Now it should look like this:
+```hbs
+{{yield (hash 
+  navBar=(component 'main-header/nav-bar')
+  subMenu=(component 'main-header/sub-menu')
+  )
+}}
+```
+
+The last thing to do is to add our pod component to the template. So open file `templates/posts/index.hbs` and add the code.
+```hbs
+{{#post-container as |pc|}}
+  {{#each model as |post|}}
+    {{pc.postCard model=post url=post.url title=post.title body=post.body}}
+  {{/each}}
+{{/post-container}}
+
+{{outlet}}
 ```

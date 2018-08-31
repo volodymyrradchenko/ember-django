@@ -1,0 +1,31 @@
+& {
+    ul {
+        list-style-type: none;
+        margin: 10px 0px 20px 15px;
+        padding: 0;
+        overflow: hidden;
+
+        li {
+        border: 1px solid #e7e7e7;
+        background-color: #f3f3f3;
+            float: left;
+
+            a {
+                display: block;
+                color: #666;
+                text-align: center;
+                padding: 14px 16px;
+                text-decoration: none;
+            }
+
+            a:hover:not(.active) {
+                background-color: #ddd;
+            }
+
+            a.active {
+                color: white;
+                background-color: #4CAF50;
+            }
+        }
+    }
+}
