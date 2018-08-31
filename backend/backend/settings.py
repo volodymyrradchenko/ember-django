@@ -63,6 +63,9 @@ REST_FRAMEWORK = {
     'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
 }
 
+JSON_API_PLURALIZE_TYPES = True
+JSON_API_FORMAT_TYPES = 'camelize'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

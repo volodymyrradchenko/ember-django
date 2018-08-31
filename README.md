@@ -170,6 +170,12 @@ INSTALLED_APPS = (
 )
 ```
 
+And we want Django to pluralize and camelize types:
+```python
+JSON_API_PLURALIZE_TYPES = True
+JSON_API_FORMAT_TYPES = 'camelize'
+```
+
 ## <a name='step-1-3'></a>Step 1.3 Model
 
 We're going to start by creating a simple `Post` model that will store our posts.
@@ -179,13 +185,12 @@ from django.db import models
 
 
 class Post(models.Model):
-	created = models.DateTimeField(auto_now_add=True)
 	title = models.CharField(max_length=100, blank=True, default='')
 	body = models.TextField(default='')
 	url = models.URLField(default='')
 
 	class Meta:
-		ordering = ('created',)
+		ordering = ('id',)
 ```
 
 We'll need to create a migration for posts model:
@@ -211,7 +216,7 @@ from posts.models import Post
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'created', 'title', 'body', 'url', )
+        fields = ('id', 'title', 'body', 'url', )
 ```
 
 ## <a name='step-1-5'></a>Step 1.5 Views
@@ -278,7 +283,7 @@ from rest_framework import routers
 
 from posts.views import PostViewSet
 
-router = routers.DefaultRouter()
+router = routers.DefaultRouter(trailing_slash=False)
 
 router.register(r'posts', PostViewSet)
 
@@ -305,7 +310,7 @@ python manage.py runserver
 
 you'll see an empty Posts List at [http://127.0.0.1:8000/posts/](http://127.0.0.1:8000/posts/)
 
-_**NOTE** [JSON API conventions](http://jsonapi.org/recommendations/) suggest us to avoid using trailing slashes. So, when we'll set up Ember.js client we'll have to change one of the lines in `urls.py` to `router = routers.DefaultRouter(trailing_slash=False)`_
+_**NOTE** [JSON API conventions](http://jsonapi.org/recommendations/) suggest us to avoid using trailing slashes (trailing_slash=False). So pay attention if you're using trailing slashes in your browser or not.
 
 If you'll scroll to the bottom of the page you'll notice an HTML form that allows us to `PUT` some information to the server. Try to add your first post.
 
